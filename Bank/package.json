@@ -1,0 +1,14 @@
+{
+  "name": "bank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bank.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arvid Larsen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
