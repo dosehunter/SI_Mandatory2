@@ -40,7 +40,7 @@ exports.getAccount = function GetAccount(accountNo){
 }
 
 // Yea... What's the easy way to do this? So that it only updates new/not null values
-exports.updateAccount = function UpdateAccount(accountNo, newAccountNo, bankUserId, isStudent, interestRate, amount){
+exports.updateAccount = function(accountNo, newAccountNo, bankUserId, isStudent, interestRate, amount){
     let modifiedDate = new Date().toISOString();
     let queryUpdateAccount = "UPDATE Account SET BankUserId = ?, AccountNo = ?, IsStudent = ?, ModifiedAt = ?, InterestRate = ?, Amount = ? WHERE AccountNo= ?";
 
@@ -49,6 +49,18 @@ exports.updateAccount = function UpdateAccount(accountNo, newAccountNo, bankUser
             return console.log(err.message);
         }
         console.log("Account updated");
+    });
+}
+
+exports.updateAmount = function(bankUserId, amount){
+    let modifiedDate = new Date().toISOString();
+    let queryUpdateAccount = "UPDATE Account SET ModifiedAt = ?, Amount = Amount + ? WHERE BankUserId = ?";
+
+    db.run(queryUpdateAccount, [modifiedDate, amount, bankUserId], (err) => {
+        if (err){
+            return console.log(err.message);
+        }
+        console.log("Account amount updated");
     });
 }
 

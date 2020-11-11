@@ -17,9 +17,9 @@ app.post("/calculate-interest_rate", (req, res) => {
 
     if (depositAmount > 0 && !isNaN(depositAmount)){
         depositAmount += depositAmount * 0.02;
-        res.send({"DepositAmount": depositAmount}).status(200);
+        res.send({"newAmount": depositAmount}).status(200);
     } else {
-        res.send({"DepositAmount": "Bad value"}).status(400);
+        res.send({"newAmount": "Bad value"}).status(400);
     } 
 });
 
@@ -31,6 +31,6 @@ app.listen(port, (err) => {
     }
     else{
         console.log("Listening on port " + port);
-        console.log("Bank system is running...");
+        console.log("Interest Rate system is running...");
     }
 });

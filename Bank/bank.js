@@ -9,6 +9,8 @@ const express = require('express');
 const Account = require('./Account');
 const User = require('./BankUser');
 const Loan = require('./Loan');
+const Deposit = require('./Deposit');
+const axios = require('axios');
 
 var app = express();
 
@@ -32,17 +34,32 @@ app.get("/list-loans/:userId", (req, res) => {
     });
 });
 
+
 app.post('/add-deposit', (req, res) =>{
     let amount = req.body.amount.toString();
+    let userId = req.body.userId.toString();
+
     if (!amount || amount < 0){
         console.log("What the hell dude?")
         res.sendStatus(403);
     }
-    
-    // Send to interest rate function
-    // Save result in DB
-    // Insert a record in deposits table as well
 
+    // Send request to interest rate system to get amount with interest
+    axios.post('http://localhost:8103/calculate-interest_rate', {"depositAmount": amount}).then(response =>{
+        // Update amount in BankUser
+        let newAmount = response.data.newAmount.toString();
+        
+        Account.updateAmount(userId, newAmount);
+        //Save to Deposit
+        Deposit.addDeposit(userId, amount);
+        
+        return res.status(200).send({"Deposited": newAmount});
+    }).catch(err =>{
+        if(err){
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
 
     // Retreive user from database
     /*db.get(queryFindUser, [nemId, password], (err, row) => {
