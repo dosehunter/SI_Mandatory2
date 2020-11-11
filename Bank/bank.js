@@ -16,11 +16,14 @@ var app = express();
 
 app.use(express.json());
 
-app.get("/list-deposits", (req, res) => {
-    /*
-    GETrequest that takes a BankUserId
-    Returns a list of all the deposits that were made by that user
-     */
+app.get("/list-deposits/:bankUserId", (req, res) => {
+    let bankUserId = req.params.bankUserId.toString();
+    
+    Deposit.getUserDeposits(bankUserId).then(list => {
+        res.send(list).status(200);
+    }).catch(err => {
+        res.sendStatus(404);
+    });
 });
 
 // http://localhost:8101/list-loans/122

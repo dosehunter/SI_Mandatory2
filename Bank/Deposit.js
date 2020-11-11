@@ -20,11 +20,11 @@ exports.addDeposit = function (userId, amount){
     });
 }
 
-exports.getUserDeposits = function CreateAccount(userId){
-    let queryGetLoans = "SELECT * FROM Loan WHERE UserId = ?"
+exports.getUserDeposits = function (bankUserId){
+    let queryGetLoans = "SELECT * FROM Deposit WHERE BankUserId = ?"
 
     return new Promise((resolve, reject) => {
-        db.all(queryGetLoans, [userId], (err, rows) => {
+        db.all(queryGetLoans, [bankUserId], (err, rows) => {
             if (err || !rows)
                 reject(err.message);
             
