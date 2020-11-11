@@ -60,18 +60,6 @@ app.post('/add-deposit', (req, res) =>{
             return res.sendStatus(500);
         }
     });
-
-    // Retreive user from database
-    /*db.get(queryFindUser, [nemId, password], (err, row) => {
-        if (row){            
-            res.status(200).send({"Happy?": "Idk"});
-        }else 
-            res.sendStatus(403);
-        if(err){
-            console.log(err);
-        }
-    });
-    */
 });
 
 app.post("/create-loan", (req, res) => {
