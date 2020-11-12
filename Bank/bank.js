@@ -16,6 +16,7 @@ var app = express();
 
 app.use(express.json());
 
+// http://localhost:8101/list-deposits/99999
 app.get("/list-deposits/:bankUserId", (req, res) => {
     let bankUserId = req.params.bankUserId.toString();
     
@@ -27,7 +28,7 @@ app.get("/list-deposits/:bankUserId", (req, res) => {
 });
 
 // http://localhost:8101/list-loans/122
-//let userId = req.query.userId.toString();
+// let userId = req.query.userId.toString();
 app.get("/list-loans/:userId", (req, res) => {
     let userId = req.params.userId.toString();  // This is better, userId is NOT optional
     Loan.getUserLoans(userId).then(list => {
@@ -66,19 +67,42 @@ app.post('/add-deposit', (req, res) =>{
 });
 
 app.post("/create-loan", (req, res) => {
-    // Request will contain the BankUserIdand LoanAmount. 
-    // A POST request will be made to the Loan Algorithm Function with an amount and the total account amount for that user 
-    // If the status code is 200, a loan record will be created
-    // If the status code is 403 or similar, an error will be returned
+    let bankUserId = req.body.bankUserId.toString();
+    let loanAmount = req.body.loanAmount.toString();
+
+    Account.getUserAccount(bankUserId).then(account => {
+        let totalAccountAmount = account.Amount.toString();
+        axios.post('http://localhost:8102/loan-calculate', {loanAmount, totalAccountAmount}).then(loanApproved => {
+            Loan.createLoan(bankUserId, loanAmount);
+            
+            res.sendStatus(200);
+        }).catch(err => {
+            res.sendStatus(400);
+        });
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
 });
 
-app.post("/pay-load", (req, res) => {
-    /* 
-    The loan can be paid integrally by using the /pay-loan endpoint. 
-    The request will containthe BankUserId and the LoanId as well. 
-    This will make the amount from a loan 0 and will subtract that amount from the accountof that user. 
-    If there aren’t enough money on the account, an error will be returned.
-    */
+app.post("/pay-loan", (req, res) => {
+    let bankUserId = req.body.bankUserId.toString();
+    let loanId = req.body.loanId.toString();
+    
+    Account.getUserAccount(bankUserId).then(account => {
+        Loan.getLoan(loanId).then(loan => {
+            if (account.Amount < loan.Amount){
+                res.sendStatus(403);
+            } else {
+                Loan.resolveLoan(loanId);
+                res.sendStatus(200);
+            }
+        }).catch(err => {
+            console.log("ERRROR")
+        });
+    }).catch(err => {
+        res.sendStatus(500);
+    });
 });
 
 app.post("/withdrawl-money", (req, res) => {

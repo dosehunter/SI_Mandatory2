@@ -39,6 +39,19 @@ exports.getAccount = function GetAccount(accountNo){
     });
 }
 
+exports.getUserAccount = function (bankUserId){
+    return new Promise((resolve, reject) => {
+        let queryFindAccount = "SELECT * FROM Account WHERE BankUserId = ?;";
+        db.get(queryFindAccount, [bankUserId], (err, row) => {
+            if (err || !row)
+                reject(false);
+            
+            if (row)
+                resolve(row);
+        });
+    });
+}
+
 // Yea... What's the easy way to do this? So that it only updates new/not null values
 exports.updateAccount = function(accountNo, newAccountNo, bankUserId, isStudent, interestRate, amount){
     let modifiedDate = new Date().toISOString();
