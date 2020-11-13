@@ -106,10 +106,21 @@ app.post("/pay-loan", (req, res) => {
 });
 
 app.post("/withdrawl-money", (req, res) => {
-    /*
-    The body of that request should contain an amount and a UserId(Not BankUserId, not SkatUserId)
-    Subtract (if possible)the amount from that users account.Throw an error otherwise.
-    */
+    let userId = req.body.userId.toString();
+    let amount = req.body.amount.toString();
+
+    Account.getUserAccount(userId).then(account => {
+        
+        if (account.Amount - amount > 0){
+            Account.updateAmount(userId, -amount);
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(500);
+        }
+
+    }).catch(err => {
+        res.sendStatus(403);
+    });
 });
 
 /*
