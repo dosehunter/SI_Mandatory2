@@ -9,15 +9,6 @@ CREATE TABLE IF NOT EXISTS SkatUser(
     IsActive INT(1)
 );
 
-CREATE TABLE IF NOT EXISTS SkatUserYear(
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    SkatUserId INT(10),
-    SkatYearId INT(10),
-    UserId INT(10),
-    IsPaid INT(1),
-    Amount INTEGER
-);
-
 CREATE TABLE IF NOT EXISTS SkatYear(
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
     Label TEXT,
@@ -25,4 +16,15 @@ CREATE TABLE IF NOT EXISTS SkatYear(
     ModifiedAt TEXT,
     StartDate TEXT NOT NULL,
     EndDate TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS SkatUserYear(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    SkatUserId INT(10),
+    SkatYearId INT(10),
+    UserId INT(10),
+    IsPaid INT(1),
+    Amount INTEGER,
+    FOREIGN KEY(SkatUserId) REFERENCES SkatUser(Id),
+    FOREIGN KEY(SkatYearId) REFERENCES SkatYear(Id)
 );
