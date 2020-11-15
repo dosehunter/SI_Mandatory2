@@ -22,13 +22,14 @@ exports.getLoan = function(loanId){
     });
 }
 
-exports.getUserLoans = function(userId){
-    let queryGetLoans = "SELECT * FROM Loan WHERE UserId = ?"
+exports.getUserLoans = function(bankUserId){
+    let queryGetLoans = "SELECT * FROM Loan WHERE BankUserId = ?"
 
     return new Promise((resolve, reject) => {
-        db.all(queryGetLoans, [userId], (err, rows) => {
-            if (err || !rows)
+        db.all(queryGetLoans, [bankUserId], (err, rows) => {
+            if (err || typeof rows === undefined){ // ??? it is not undefined, but it fails .forEach as it is undefined!?
                 reject(err.message);
+            }
             
             var list = [];
 
@@ -40,11 +41,11 @@ exports.getUserLoans = function(userId){
     });
 }
 
-exports.createLoan = function(userId, amount){
-    let queryCreateLoan = "INSERT INTO Loan (UserId, CreatedAt, Amount) VALUES(?, ?, ?);";
+exports.createLoan = function(bankUserId, amount){
+    let queryCreateLoan = "INSERT INTO Loan (BankUserId, CreatedAt, Amount) VALUES(?, ?, ?);";
     let creationDate = new Date().toISOString();
 
-    db.run(queryCreateLoan, [userId, creationDate, amount], err => {
+    db.run(queryCreateLoan, [bankUserId, creationDate, amount], err => {
         if (err)
             return console.log(err.message);
     });

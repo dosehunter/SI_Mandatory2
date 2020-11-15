@@ -1,8 +1,17 @@
-/**
+/*
  * Responsible for ... Not much
  * 
  * Author: Arvid Larsen
  */
+
+/*
+I think I understand the task now?
+CHANGE SO THAT BankUserId PONINTS TO ID of BankUser and NOT UserId
+TODO Make foreign keys in DB
+*/
+
+
+
 
 const port = 8101;
 const express = require('express');
@@ -41,7 +50,7 @@ app.get("/list-loans/:userId", (req, res) => {
 
 app.post('/add-deposit', (req, res) =>{
     let amount = req.body.amount.toString();
-    let userId = req.body.userId.toString();
+    let bankUserId = req.body.bankUserId.toString();
 
     if (!amount || amount < 0){
         console.log("What the hell dude?")
@@ -53,9 +62,9 @@ app.post('/add-deposit', (req, res) =>{
         // Update amount in BankUser
         let newAmount = response.data.newAmount.toString();
         
-        Account.updateAmount(userId, newAmount);
+        Account.updateAmount(bankUserId, newAmount);
         //Save to Deposit
-        Deposit.addDeposit(userId, amount);
+        Deposit.addDeposit(bankUserId, amount);
         
         return res.status(200).send({"Deposited": newAmount});
     }).catch(err =>{
@@ -98,7 +107,7 @@ app.post("/pay-loan", (req, res) => {
                 res.sendStatus(200);
             }
         }).catch(err => {
-            console.log("ERRROR")
+            console.log("ERROR")
         });
     }).catch(err => {
         res.sendStatus(500);
@@ -128,18 +137,25 @@ app.post("/withdrawl-money", (req, res) => {
 #####################    FOR TEMPORARY TESTING ONLY!    ##################### 
  */
 //#region 
-app.get("/test-add", (req, res) => {
-    User.createUser(1233312);
+app.post("/test-add", (req, res) => {
+    let userId = Number(req.body.userId);
+
+    User.createUser(userId);
     res.sendStatus(200);
 });
-app.get("/test-read", (req, res) => {
-    User.getUser(1233312).then(value => {
-        console.log(value);
+app.get("/test-read/:user", (req, res) => {
+    let user = Number(req.params.user);
+
+    User.getUser(user).then(value => {
+        res.send(value).status(200);
+    }).catch(err => {
+        res.sendStatus(500);
     });
-    res.sendStatus(200);
 });
-app.get("/test-remove", (req, res) => {
-    User.deleteUser(1233312);
+app.delete("/test-remove/:user", (req, res) => {
+    let user = Number(req.params.user);
+
+    User.deleteUser(user);
     res.sendStatus(200);
 });
 app.get("/test-update", (req, res) => {
@@ -147,29 +163,48 @@ app.get("/test-update", (req, res) => {
     res.sendStatus(200);
 });
 
-app.get("/test-create-acc", (req, res) => {
-    Account.createAccount(99999, 0, 0.3, 100);
+app.post("/test-create-acc", (req, res) => {
+    let userId = Number(req.body.userId);
+    let isStudent = Number(req.body.isStudent);
+    let interestRate = Number(req.body.interestRate);
+    let amount = Number(req.body.amount);
+
+    Account.createAccount(userId, isStudent, interestRate, amount);
     res.sendStatus(200);
 });
 
-app.get("/test-get-acc", (req, res) => {
-    Account.getAccount(8383905086).then(account => {
-        console.log(account);
+app.get("/test-get-acc/:account", (req, res) => {
+    let account = Number(req.params.account);
+
+    Account.getAccount(account).then(account => {
+        res.send(account).status(200);
+    }).catch(err => {
+        res.sendStatus(500);
     })
-    res.sendStatus(200);
 });
-app.get("/test-update-acc", (req, res) => {
-    Account.updateAccount(8383905026, 8383905026, 99999, 0, 0.2, 200);
+app.patch("/test-update-acc", (req, res) => {
+    let accNo = Number(req.body.accountNo);
+    let newAccNo = Number(req.body.newAccountNo);
+    let bankUserId = Number(req.body.bankUserId);
+    let isStudent = Number(req.body.isStudent);
+    let interestRate = Number(req.body.interestRate);
+    let amount = Number (req.body.amount);
+
+    Account.updateAccount(accNo, newAccNo, bankUserId, isStudent, interestRate, amount);
     res.sendStatus(200);
 })
 
-app.get("/test-get-loans", (req, res) => {
-    Loan.getUserLoans(122).then(list => {
-        list.forEach(element => {
-            console.log(element);
-        });
+app.get("/test-get-loans/:user", (req, res) => {
+    let user = Number(req.params.user);
+
+    Loan.getUserLoans(user).then(list => {
+        //list.forEach(loans => {
+        //    console.log(loans);
+        //});
+        res.send(list).status(200);
+    }).catch(err => {
+        res.sendStatus(500);
     });
-    res.sendStatus(200);
 })
 //#endregion
 /*

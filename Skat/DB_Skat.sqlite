@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS SkatUser;
+DROP TABLE IF EXISTS SkatUserYear;
+DROP TABLE IF EXISTS SkatYear;
+
+CREATE TABLE IF NOT EXISTS SkatUser(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId INT(10),
+    CreatedAt TEXT NOT NULL,
+    IsActive INT(1)
+);
+
+CREATE TABLE IF NOT EXISTS SkatUserYear(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    SkatUserId INT(10),
+    SkatYearId INT(10),
+    UserId INT(10),
+    IsPaid INT(1),
+    Amount INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS SkatYear(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Label TEXT,
+    CreatedAt TEXT NOT NULL,
+    ModifiedAt TEXT,
+    StartDate TEXT NOT NULL,
+    EndDate TEXT NOT NULL
+);

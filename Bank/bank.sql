@@ -12,10 +12,11 @@ CREATE TABLE IF NOT EXISTS BankUser(
 
 CREATE TABLE IF NOT EXISTS Loan(
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    UserId INT(10),
+    BankUserId INT(10),
     CreatedAt TEXT NOT NULL,
     ModifiedAt  TEXT,
-    Amount INTEGER    
+    Amount INTEGER,
+    FOREIGN KEY(BankUserId) REFERENCES BankUser(Id)  
 );
 
 CREATE TABLE IF NOT EXISTS Account(
@@ -26,12 +27,14 @@ CREATE TABLE IF NOT EXISTS Account(
     CreatedAt TEXT NOT NULL,
     ModifiedAt  TEXT,
     InterestRate REAL,
-    Amount INTEGER    
+    Amount INTEGER,
+    FOREIGN KEY(BankUserId) REFERENCES BankUser(Id)
 );
 
 CREATE TABLE IF NOT EXISTS Deposit(
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
     BankUserId INT(10),
     CreatedAt TEXT NOT NULL,
-    Amount INTEGER
+    Amount INTEGER,
+    FOREIGN KEY(BankUserId) REFERENCES BankUser(Id)
 );

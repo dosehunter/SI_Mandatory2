@@ -7,7 +7,7 @@ const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Bank/Bank.db');
 
-exports.createAcocunt = function CreateAccount(bankUserId, isStudent, interestRate, amount){
+exports.createAccount = function(bankUserId, isStudent, interestRate, amount){
     let queryCreateAccount = "INSERT INTO Account (BankUserId, AccountNo, IsStudent, CreatedAt, InterestRate, Amount) VALUES(?, ?, ?, ?, ?, ?)"
     let creationDate = new Date().toISOString();
     let accountNo = Math.floor(Math.random() * (9999999999 - 1000000000) + 1000000000);
