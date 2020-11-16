@@ -12,7 +12,7 @@ var app = express();
 app.use(express.json());
 
 
-app.post("/loan-calculate", (req, res) => {
+app.post("/api/bank/loan-calculate", (req, res) => {
     
     let loanAmount = req.body.loanAmount.toString();
     let accountTotal = req.body.totalAccountAmount.toString();

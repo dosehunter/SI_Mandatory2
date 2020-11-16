@@ -12,7 +12,7 @@ var app = express();
 app.use(express.json());
 
 
-app.post("/calculate-interest_rate", (req, res) => {
+app.post("/api/bank/calculate-interest_rate", (req, res) => {
     let depositAmount = Number(req.body.depositAmount.toString());
 
     if (depositAmount > 0 && !isNaN(depositAmount)){

@@ -3,134 +3,18 @@
  * 
  * Author: Arvid Larsen
  */
-
-/*
-I think I understand the task now?
-CHANGE SO THAT BankUserId PONINTS TO ID of BankUser and NOT UserId
-TODO Make foreign keys in DB
-*/
-
-
-
-
 const port = 8101;
 const express = require('express');
-const Account = require('./Account');
-const User = require('./BankUser');
-const Loan = require('./Loan');
-const Deposit = require('./Deposit');
-const axios = require('axios');
+const Account = require('./model/Account');
+const User = require('./model/BankUser');
+const Loan = require('./model/Loan');
+
+const catalogue = require('./routes/catalogue.js');
 
 var app = express();
-
 app.use(express.json());
 
-// http://localhost:8101/list-deposits/99999
-app.get("/list-deposits/:bankUserId", (req, res) => {
-    let bankUserId = req.params.bankUserId.toString();
-    
-    Deposit.getUserDeposits(bankUserId).then(list => {
-        res.send(list).status(200);
-    }).catch(err => {
-        res.sendStatus(404);
-    });
-});
-
-// http://localhost:8101/list-loans/122
-// let userId = req.query.userId.toString();
-app.get("/list-loans/:userId", (req, res) => {
-    let userId = req.params.userId.toString();  // This is better, userId is NOT optional
-    Loan.getUserLoans(userId).then(list => {
-        res.send(list).status(200);
-    }).catch(err => {
-        res.sendStatus(404);
-    });
-});
-
-
-app.post('/add-deposit', (req, res) =>{
-    let amount = req.body.amount.toString();
-    let bankUserId = req.body.bankUserId.toString();
-
-    if (!amount || amount < 0){
-        console.log("What the hell dude?")
-        res.sendStatus(403);
-    }
-
-    // Send request to interest rate system to get amount with interest
-    axios.post('http://localhost:8103/calculate-interest_rate', {"depositAmount": amount}).then(response =>{
-        // Update amount in BankUser
-        let newAmount = response.data.newAmount.toString();
-        
-        Account.updateAmount(bankUserId, newAmount);
-        //Save to Deposit
-        Deposit.addDeposit(bankUserId, amount);
-        
-        return res.status(200).send({"Deposited": newAmount});
-    }).catch(err =>{
-        if(err){
-            console.log(err);
-            return res.sendStatus(500);
-        }
-    });
-});
-
-app.post("/create-loan", (req, res) => {
-    let bankUserId = req.body.bankUserId.toString();
-    let loanAmount = req.body.loanAmount.toString();
-
-    Account.getUserAccount(bankUserId).then(account => {
-        let totalAccountAmount = account.Amount.toString();
-        axios.post('http://localhost:8102/loan-calculate', {loanAmount, totalAccountAmount}).then(loanApproved => {
-            Loan.createLoan(bankUserId, loanAmount);
-            
-            res.sendStatus(200);
-        }).catch(err => {
-            res.sendStatus(400);
-        });
-    }).catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-    });
-});
-
-app.post("/pay-loan", (req, res) => {
-    let bankUserId = req.body.bankUserId.toString();
-    let loanId = req.body.loanId.toString();
-    
-    Account.getUserAccount(bankUserId).then(account => {
-        Loan.getLoan(loanId).then(loan => {
-            if (account.Amount < loan.Amount){
-                res.sendStatus(403);
-            } else {
-                Loan.resolveLoan(loanId);
-                res.sendStatus(200);
-            }
-        }).catch(err => {
-            console.log("ERROR")
-        });
-    }).catch(err => {
-        res.sendStatus(500);
-    });
-});
-
-app.post("/withdrawl-money", (req, res) => {
-    let userId = req.body.userId.toString();
-    let amount = req.body.amount.toString();
-
-    Account.getUserAccount(userId).then(account => {
-        
-        if (account.Amount - amount > 0){
-            Account.updateAmount(userId, -amount);
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(500);
-        }
-
-    }).catch(err => {
-        res.sendStatus(403);
-    });
-});
+app.use('/api/bank', catalogue);
 
 /*
 #############################################################################

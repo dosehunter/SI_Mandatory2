@@ -37,39 +37,51 @@
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{everything}",    
+        "DownstreamPathTemplate": "/api/bank/{controller}/{everything}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "8101"    
           }     
         ],    
         "UpstreamPathTemplate": "/api/bank/{controller}/{everything}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}",    
+        "DownstreamPathTemplate": "/api/bank/{controller}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "8101"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/bank/{controller}/{identifier}",    
+        "UpstreamPathTemplate": "/api/bank/{controller}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}/{everything}",    
+        "DownstreamPathTemplate": "/api/bank/{controller}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5005"    
+           "Port": "8102"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/bank/{controller}/{identifier}/{everything}",    
+        "UpstreamPathTemplate": "/api/bank_loan/{controller}",    
+        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/bank/{controller}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "8103"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/api/bank_interest/{controller}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
