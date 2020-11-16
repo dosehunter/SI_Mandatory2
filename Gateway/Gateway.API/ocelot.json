@@ -90,7 +90,7 @@
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "8401"    
           }     
         ],    
         "UpstreamPathTemplate": "/api/skat/{controller}/{everything}",    
@@ -102,22 +102,22 @@
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "8401"    
           }     
         ],    
         "UpstreamPathTemplate": "/api/skat/{controller}/{identifier}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}/{everything}",    
+        "DownstreamPathTemplate": "/api/{controller}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
            "Host": "localhost",    
-           "Port": "5006"    
+           "Port": "8401"    
           }     
         ],    
-        "UpstreamPathTemplate": "/api/skat/{controller}/{identifier}/{everything}",    
+        "UpstreamPathTemplate": "/api/skat/{controller}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {

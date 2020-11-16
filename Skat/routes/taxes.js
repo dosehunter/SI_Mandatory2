@@ -1,19 +1,13 @@
 /*
- * Responsible for 
- *
+ * Responsible for all routes related to Skat.SkatUser
+ * 
  * Author: Arvid Larsen
  */
-
-const port = 8201;
-const express = require('express');
-const SkatUserYear = require('./SkatUserYear');
+const SkatUserYear = require('../Model/SkatUserYear.js');
 const axios = require('axios');
 
-var app = express();
-
-app.use(express.json);
-
-app.post("/pay-taxes", (req, res) => {
+//app.post("/pay-taxes", (req, res) => {
+exports.payTaxes = function(req, res){
     let userId = req.body.userId.toString();
     let totalAmount = req.body.amount.toString();
     
@@ -42,14 +36,4 @@ app.post("/pay-taxes", (req, res) => {
     // This request should  amount and UserId
 
     res.sendStatus(500);
-});
-
-
-app.listen(port, err => {
-    if (err){
-        console.log(err);
-    } else {
-        console.log("Listening on port ", port);
-        console.log("Skat system is running...")
-    }
-});
+};

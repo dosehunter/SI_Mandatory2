@@ -4,6 +4,7 @@
  * 
  * Relevant:
  * https://medium.com/@xoor/building-a-node-js-rest-api-5-defining-the-routes-9eab8031b087
+ * https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes
  * 
  * Author: Arvid Larsen
 */
