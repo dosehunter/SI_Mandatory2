@@ -52,3 +52,13 @@ exports.payLoan = function(req, res){
         res.sendStatus(500);
     });
 };
+
+//app.get("/loan/:loanId", (req, res) => {
+exports.getLoan = function(req, res){
+    let loanId = Number(req.params.loanId);
+    Loan.getLoan(loanId).then(loan => {
+        res.send(loan).status(200);
+    }).catch(err => {
+        res.sendStatus(204);
+    });
+};

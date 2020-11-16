@@ -35,7 +35,6 @@ exports.updateUser = function (userId, newUserId){
         if (err){
             return console.log(err.message);
         }
-        console.log("User updated");
     });
 }
 
