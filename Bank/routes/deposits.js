@@ -1,3 +1,9 @@
+/*
+ * Responsible for all routes related to deposits
+ * 
+ * Author: Arvid Larsen
+ */
+
 const Deposit = require('../Model/Deposit.js');
 const Account = require('../model/Account.js');
 const axios = require('axios');

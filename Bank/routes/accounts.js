@@ -1,6 +1,10 @@
-const Loan = require('../Model/Loan.js');
+/*
+ * Responsible for all routes related to accounts
+ * 
+ * Author: Arvid Larsen
+ */
+
 const Account = require('../model/Account.js');
-const axios = require('axios');
 
 //app.post("/account", (req, res) => {
 exports.createAccount = function(req, res) {

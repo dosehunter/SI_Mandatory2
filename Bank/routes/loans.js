@@ -1,3 +1,9 @@
+/*
+ * Responsible for all routes related to loans
+ * 
+ * Author: Arvid Larsen
+ */
+
 const Loan = require('../Model/Loan.js');
 const Account = require('../model/Account.js');
 const axios = require('axios');

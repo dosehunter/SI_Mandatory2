@@ -1,5 +1,10 @@
-const User = require('../model/BankUser');
+/*
+ * Responsible for all routes related to users
+ * 
+ * Author: Arvid Larsen
+ */
 
+const User = require('../model/BankUser');
 
 //app.post("/user/:userId", (req, res) => {
 exports.createUser = function(req, res){

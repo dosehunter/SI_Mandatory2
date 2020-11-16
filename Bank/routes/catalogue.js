@@ -1,3 +1,12 @@
+/*
+ * Responsible for defining all routes
+ * 
+ * 
+ * Relevant:
+ * https://medium.com/@xoor/building-a-node-js-rest-api-5-defining-the-routes-9eab8031b087
+ * 
+ * Author: Arvid Larsen
+*/
 const express = require('express');
 var router = express.Router();
 
@@ -44,6 +53,7 @@ router.route('/account/:accountId')
 router.post('/account', accounts.createAccount);
 
 //#endregion
+
 
 //#region USER ROUTES
 // GET for retrieving a user
