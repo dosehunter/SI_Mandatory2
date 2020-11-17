@@ -9,12 +9,16 @@ var router = express.Router();
 
 var skatUser = require('./skat_user.js');
 var skatUserYear = require('./skat_user_year.js');
+var taxes = require('./taxes.js');
 
 //#region SKATUSER ROUTES
 // GET list of user deposits
-router.route('/skatUser/:id')
-    .get(skatUser.getSkatUser);
+router.route('/skat-user/:id')
+    .get(skatUser.getSkatUser)
+    .put(skatUser.updateSkatUser)
+    .delete(skatUser.deleteSkatUserYear);
 
+router.post("/skat-user", skatUser.createSkatUser);
 //#endregion
 
 
@@ -29,5 +33,9 @@ router.route('/skatUserYear')
     .post(skatUserYear.createSkatUser);
 //#endregion
 
+//#region TAX ROUTE
+router.post('/pay-taxes', taxes.payTaxes);
+
+//#endregion
 
 module.exports = router;

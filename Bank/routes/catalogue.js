@@ -51,6 +51,8 @@ router.route('/account/:accountId')
     .delete(accounts.deleteAccount)
     .put(accounts.updateAccount);
 
+router.post('/pay-userid-taxes', accounts.payTaxes);
+
 router.post('/account', accounts.createAccount);
 
 //#endregion

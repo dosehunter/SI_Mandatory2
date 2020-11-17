@@ -7,33 +7,43 @@ const SkatUserYear = require('../Model/SkatUserYear.js');
 const axios = require('axios');
 
 //app.post("/pay-taxes", (req, res) => {
+/**
+ * Responsible for paying taxes
+ * Updating Skat.db -> SkatUserYear Amount
+ * Send request to Bank to deduct money from userIds account
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.payTaxes = function(req, res){
     let userId = req.body.userId.toString();
     let totalAmount = req.body.amount.toString();
     
-    SkatUserYear.getSkatUserYear(userId).then(record => {
-        let user = record;
+    SkatUserYear.getSkatUserYearUserId(userId).then(record => {
+        let userSkatYear = record;
         
-        if (amount > 0){
-            axios.post('http://localhost:8202/Skat_Tax_Calculator', {"amount": user.Amount}).then(response =>{
-                let total = response.total;
-                user.IsPaid = 1;
-                user.Amount = total;
+        if (userSkatYear.Amount == 0){
+            axios.post('http://localhost:7071/api/Skat_Tax_Calculator', {"money": totalAmount}).then(response =>{
+                let total = response.data.tax_money;
+                userSkatYear.IsPaid = 1;
+                userSkatYear.Amount = total;
+                
+                SkatUserYear.updateSkatUserYear(userSkatYear);
+                // We should probably wait for this?
 
-                console.log("UPDATING USER!");
-                SkatUserYear.updateUser(user);
+                axios.post('http://localhost:5000/api/bank/pay-userid-taxes', {"UserId": userId, "Amount":total}).then(updResponse => {
+                    if (updResponse.status == 200){
+                        res.sendStatus(200);
+                    }
+                }).catch(err => {
+                    res.sendStatus(403);
+                });
             }).catch(err => {
                 res.sendStatus(403);
             });
+        }else {
+            res.send("Taxes have been paid").status(400);
         }
     }).catch(err => {
         res.sendStatus(500);
     });
-    // Check if user did previously pay taxes -> if value is > 0 in SkatUserYear
-    // Call to TaxCalculator
-    // If good response -> SkatUserYear will be updated with the returned sum and IsPaid == true
-    // Call to Bank api, subtract money from account.
-    // This request should  amount and UserId
-
-    res.sendStatus(500);
 };

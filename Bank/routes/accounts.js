@@ -5,6 +5,11 @@
  */
 
 const Account = require('../model/Account.js');
+const axios = require('axios');
+const sqlite3 = require('sqlite3');
+
+var db = new sqlite3.Database('../Bank/Bank.db');
+
 
 //app.post("/account", (req, res) => {
 exports.createAccount = function(req, res) {
@@ -50,13 +55,13 @@ exports.deleteAccount = function(req, res){
 
 //app.post("/withdrawl-money", (req, res) => {
 exports.withdrawMoney = function(req, res){
-    let userId = req.body.userId.toString();
+    let bankUserId = req.body.bankUserId.toString();
     let amount = req.body.amount.toString();
-
-    Account.getUserAccount(userId).then(account => {
+    
+    Account.getUserAccount(bankUserId).then(account => {
         
         if (account.Amount - amount > 0){
-            Account.updateAmount(userId, -amount);
+            Account.updateAmount(bankUserId, -amount);
             res.sendStatus(200);
         } else {
             res.sendStatus(500);
@@ -66,3 +71,25 @@ exports.withdrawMoney = function(req, res){
         res.sendStatus(403);
     });
 };
+
+exports.payTaxes = function(req, res) {
+    let userId = req.body.UserId;
+    let amount = req.body.Amount;
+    
+    let queryGetAccountFromUserId = "SELECT Account.BankUserId FROM Account INNER JOIN BankUser ON Account.BankUserId = BankUser.Id WHERE BankUser.UserId = ?;";
+
+    db.get(queryGetAccountFromUserId, [userId], (err, bUserId) => {
+        if (err || !bUserId)
+            res.sendStatus(404);
+
+        let bankUserId = bUserId.BankUserId;
+        axios.post("http://localhost:5000/api/bank/withdrawl-money", {bankUserId, amount}).then(response => {
+            if (response.status == 200){
+                res.sendStatus(200);
+            }
+        }).catch(err => {
+            res.send('Bank.accounts.payTaxes endpoint cannot communicate with /api/bank/withdrawl-money!').status(500);
+        });
+
+    });
+}
