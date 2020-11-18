@@ -6,7 +6,11 @@
 
 const SkatUserYear = require('../Model/SkatUserYear.js');
 
-//app.get("/getUser/:id", (req, res) => {
+/**
+ * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.getSkatUserYear = function(req, res){
     let id = req.params.id;
 
@@ -15,6 +19,11 @@ exports.getSkatUserYear = function(req, res){
     });
 }
 
+/**
+ * Endpoint: /api/skatUserYear || /api/skat/skatUserYear
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.createSkatUser = function(req, res){
     let skatUserId = Number(req.body.skatUserId);
     let skatYearId = Number(req.body.skatYearId);
@@ -26,6 +35,11 @@ exports.createSkatUser = function(req, res){
     res.sendStatus(200);
 }
 
+/**
+ * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.deleteSkatUserYear = function(req, res){
     let id = req.params.id;
 
@@ -33,6 +47,11 @@ exports.deleteSkatUserYear = function(req, res){
     res.sendStatus(200); // ZERO validation given, just following orders
 }
 
+/**
+ * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.updateSkatUserYear = function(req, res){
     // Or just expect to get a json object with all of that instead?
     // Like let skatUserYear = req.body.skatUserYear;

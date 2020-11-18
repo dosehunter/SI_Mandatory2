@@ -1,15 +1,19 @@
 /*
- * Contains CRUD operations for Skat.SkatUserYear
+ * Contains CRUD operations for Skat.SkatYear
  *
  * Author: Arvid Larsen
  */
 
-
- const sqlite3 = require('sqlite3');
+const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Skat/Skat.db');
 
-// /api/skat-year/:id
+/**
+ * Get a row from Skat.SkatYear based on Id.
+ * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.getSkatYear = function (req, res){
     let queryGetSkatYear = "SELECT * FROM SkatYear WHERE Id = ?;"
     let id = req.params.id;
@@ -24,7 +28,12 @@ exports.getSkatYear = function (req, res){
     });
 }
 
-// /api/skat-year
+/**
+ * Create a new row in Skat.SkatYear.
+ * Endpoint: /api/skat-year || /api/skat/skat-year
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.createSkatYear = function(req, res){
     let queryCreateSkatYear = "INSERT INTO SkatYear (Label, CreatedAt, StartDate, EndDate) VALUES(?, ?, ?, ?);"
     let label = req.body.label;
@@ -43,7 +52,12 @@ exports.createSkatYear = function(req, res){
     })
 }
 
-// /api/skat-year/:id
+/**
+ * Update a row in Skat.SkatYear based on Id.
+ * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.updateSkatYear = function(req, res){
     let queryUpdateYear = "UPDATE SkatYear SET Label = ?, ModifiedAt = ?, StartDate = ?, EndDate = ?  WHERE Id = ?;";
     let label = req.body.label;
@@ -62,7 +76,12 @@ exports.updateSkatYear = function(req, res){
     });
 }
 
-// /api/skat-year/:id
+/**
+ * Delete a row in Skat.SkatYear based on Id.
+ * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.deleteSkatYear = function(req, res){
     let queryDeleteSkatYear = "DELETE FROM SkatYear WHERE Id = ?;";
     let id = req.params.id;

@@ -8,7 +8,12 @@ const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Skat/Skat.db');
 
-// /api/skat/skat-user/:id
+/**
+ * Gets a SkatUser(Skat.SkatUser) based on parameters.
+ * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.getSkatUser = function(req, res){
     let id = req.params.id;
 
@@ -23,7 +28,12 @@ exports.getSkatUser = function(req, res){
     });
 };
 
-// /api/skat/skat-user/:id
+/**
+ * Updates a SkatUser(Skat.SkatUser) from JSON in request body.
+ * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.updateSkatUser = function(req, res){
     let id = req.params.id;
     let userId = req.body.userId;
@@ -42,7 +52,12 @@ exports.updateSkatUser = function(req, res){
     });
 }
 
-// /api/skat/skat-user
+/**
+ * Creates a SkatUser(Skat.SkatUser) from JSON body.
+ * Endpoint: /api/skat-user || /api/skat/skat-user
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.createSkatUser = function(req, res){
     let createdAt = new Date();
     let userId = req.body.userId;
@@ -61,7 +76,12 @@ exports.createSkatUser = function(req, res){
     })
 }
 
-// /api/skat/skat-user/:id
+/**
+ * Deletes a SkatUser(Skat.SkatUser) based on id from parameters.
+ * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * @param {Request} req Contains data for server.
+ * @param {Response} res Response to client.
+ */
 exports.deleteSkatUserYear = function(req, res){
     let id = req.params.id;
     
