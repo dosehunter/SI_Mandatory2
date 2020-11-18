@@ -1,5 +1,5 @@
 /*
- * Responsible for defining all routes
+ * Responsible for defining all routes and the exporting them
  * 
  * 
  * Relevant:
@@ -11,6 +11,7 @@
 const express = require('express');
 var router = express.Router();
 
+// Get routes
 var deposits = require('./deposits.js');
 var loans = require('./loans.js');
 var accounts = require('./accounts.js');
@@ -18,10 +19,10 @@ var users = require('./users');
 
 
 //#region DEPOSIT ROUTES
-// GET list of user deposits
+// GET list of user deposits.
 router.get('/list-deposits/:bankUserId', deposits.listDeposits);
 
-// POST request for depositing
+// POST request for depositing.
 router.post('/add-deposit', deposits.addDeposit);
 
 //#endregion
@@ -31,6 +32,7 @@ router.post('/add-deposit', deposits.addDeposit);
 // GET list of users loans
 router.get('/list-loans/:userId', loans.listUserLoans);
 
+// GET for getting a loan.
 router.get('/loan/:loanId', loans.getLoan);
 
 // POST for creating a loan
@@ -43,23 +45,26 @@ router.post('/pay-loan', loans.payLoan);
 
 
 //#region ACCOUNT ROUTES
-// POST for withdrawing money
+// POST for withdrawing money.
 router.post('/withdrawl-money', accounts.withdrawMoney); 
 
+// GET, DELETE, and PUT for Getting/deleting/updating an Account.
 router.route('/account/:accountId')
     .get(accounts.getAccount)
     .delete(accounts.deleteAccount)
     .put(accounts.updateAccount);
 
+// Endpoint for paying taxes.
 router.post('/pay-userid-taxes', accounts.payTaxes);
 
+// POST for creating an account.
 router.post('/account', accounts.createAccount);
 
 //#endregion
 
 
 //#region USER ROUTES
-// GET for retrieving a user
+// GET, POST, DELETE, PUT for retrieving, creating, deleting, or updating a user.
 router.route('/user/:userId')
     .get(users.getUser)
     .post(users.createUser)
@@ -69,4 +74,5 @@ router.route('/user/:userId')
 
 //#endregion
 
+// Export all routes.
 module.exports = router;

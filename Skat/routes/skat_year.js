@@ -11,7 +11,8 @@ var db = new sqlite3.Database('../Skat/Skat.db');
 /**
  * Get a row from Skat.SkatYear based on Id.
  * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Incoming request, parameter: Id.
  * @param {Response} res Response to client.
  */
 exports.getSkatYear = function (req, res){
@@ -31,7 +32,8 @@ exports.getSkatYear = function (req, res){
 /**
  * Create a new row in Skat.SkatYear.
  * Endpoint: /api/skat-year || /api/skat/skat-year
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Incoming request, JSON: label, startDate, endDate.
  * @param {Response} res Response to client.
  */
 exports.createSkatYear = function(req, res){
@@ -55,7 +57,8 @@ exports.createSkatYear = function(req, res){
 /**
  * Update a row in Skat.SkatYear based on Id.
  * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Incoming request, parameter: Id, JSON: label, startDate, endDate.
  * @param {Response} res Response to client.
  */
 exports.updateSkatYear = function(req, res){
@@ -79,7 +82,8 @@ exports.updateSkatYear = function(req, res){
 /**
  * Delete a row in Skat.SkatYear based on Id.
  * Endpoint: /api/skat-year/:id || /api/skat/skat-year/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Incoming request, parameter: Id.
  * @param {Response} res Response to client.
  */
 exports.deleteSkatYear = function(req, res){

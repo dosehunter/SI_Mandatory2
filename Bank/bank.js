@@ -1,5 +1,5 @@
 /*
- * Responsible for running the bank system
+ * Responsible for running the bank system.
  * 
  * Author: Arvid Larsen
  */

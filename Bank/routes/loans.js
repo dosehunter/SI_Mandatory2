@@ -1,5 +1,5 @@
 /*
- * Responsible for all routes related to loans
+ * Responsible for all routes related to loans (Bank.Loan).
  * 
  * Author: Arvid Larsen
  */
@@ -8,7 +8,13 @@ const Loan = require('../Model/Loan.js');
 const Account = require('../model/Account.js');
 const axios = require('axios');
 
-//app.get("/list-loans/:userId", (req, res) => {
+/**
+ * Endpoint for listing all loans related to a userId.
+ * Endpoint: /api/list-loans/:userId | /api/bank/list-loans/:userId
+ * 
+ * @param {request} req Incoming request, parameter with userId.
+ * @param {Response} res Outgoing response.
+ */
 exports.listUserLoans = function(req, res) {
     let userId = req.params.userId.toString();  // This is better, userId is NOT optional
     Loan.getUserLoans(userId).then(list => {
@@ -18,7 +24,13 @@ exports.listUserLoans = function(req, res) {
     });
 };
 
-//app.post("/create-loan", (req, res) => {
+/**
+ * Endpoint for creating a new loan based on bankUserId.
+ * Endpoint: /api/create-loan | /api/bank/create-loan
+ * 
+ * @param {request} req Incoming request, JSON with bankUserId and loanAmount.
+ * @param {Response} res Outgoing response.
+ */
 exports.createLoan = function(req, res){
     let bankUserId = req.body.bankUserId.toString();
     let loanAmount = req.body.loanAmount.toString();
@@ -38,7 +50,13 @@ exports.createLoan = function(req, res){
     });
 };
 
-//app.post("/pay-loan", (req, res) => {
+/**
+ * Endpoint for paying a loan based on bankUserId.
+ * Endpoint: /api/pay-loan | /api/bank/pay-loan
+ * 
+ * @param {request} req Incoming request, JSON with bankUserId and loanId.
+ * @param {Response} res Outgoing response.
+ */
 exports.payLoan = function(req, res){
     let bankUserId = req.body.bankUserId.toString();
     let loanId = req.body.loanId.toString();
@@ -59,7 +77,13 @@ exports.payLoan = function(req, res){
     });
 };
 
-//app.get("/loan/:loanId", (req, res) => {
+/**
+ * Endpoint for paying a loan based on bankUserId.
+ * Endpoint: /api/loan/:loanId | /api/bank/loan/:loanId
+ * 
+ * @param {request} req Incoming request, parameter with loanId.
+ * @param {Response} res Outgoing response.
+ */
 exports.getLoan = function(req, res){
     let loanId = Number(req.params.loanId);
     Loan.getLoan(loanId).then(loan => {

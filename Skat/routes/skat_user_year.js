@@ -1,5 +1,5 @@
 /*
- * Responsible for all routes related to Skat.SkatUserYear
+ * Responsible for all routes related to Skat.SkatUserYear.
  * 
  * Author: Arvid Larsen
  */
@@ -7,8 +7,10 @@
 const SkatUserYear = require('../Model/SkatUserYear.js');
 
 /**
+ * Retrieves a SkatUserYear based of Id.
  * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Contains data for server, parameter: Id.
  * @param {Response} res Response to client.
  */
 exports.getSkatUserYear = function(req, res){
@@ -20,8 +22,10 @@ exports.getSkatUserYear = function(req, res){
 }
 
 /**
+ * Creates a SkatUserYear.
  * Endpoint: /api/skatUserYear || /api/skat/skatUserYear
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Contains data for server, JSON: skatUserId, skatYearId, userId, isPaid, amount.
  * @param {Response} res Response to client.
  */
 exports.createSkatUser = function(req, res){
@@ -36,8 +40,10 @@ exports.createSkatUser = function(req, res){
 }
 
 /**
+ * Deletes a SkatUserYear based on Id.
  * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Contains data for server, parameter: Id.
  * @param {Response} res Response to client.
  */
 exports.deleteSkatUserYear = function(req, res){
@@ -48,8 +54,10 @@ exports.deleteSkatUserYear = function(req, res){
 }
 
 /**
+ * Updates a SkatUserYear based on JSON object.
  * Endpoint: /api/skatUserYear/:id || /api/skat/skatUserYear/:id
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Contains data for server, JSON object of SkatUserYear to update.
  * @param {Response} res Response to client.
  */
 exports.updateSkatUserYear = function(req, res){

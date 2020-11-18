@@ -12,6 +12,10 @@ var app = express();
 app.use(express.json());
 
 
+/**
+ * Endpoint for calculating the interes rate on received amount.
+ * Takes a JSON body with depositAmuont.
+ */
 app.post("/api/bank/calculate-interest_rate", (req, res) => {
     let depositAmount = Number(req.body.depositAmount.toString());
 

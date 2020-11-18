@@ -11,6 +11,7 @@ var db = new sqlite3.Database('../Skat/Skat.db');
 /**
  * Gets a SkatUser(Skat.SkatUser) based on parameters.
  * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * 
  * @param {Request} req Contains data for server.
  * @param {Response} res Response to client.
  */
@@ -31,6 +32,7 @@ exports.getSkatUser = function(req, res){
 /**
  * Updates a SkatUser(Skat.SkatUser) from JSON in request body.
  * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * 
  * @param {Request} req Contains data for server.
  * @param {Response} res Response to client.
  */
@@ -55,6 +57,7 @@ exports.updateSkatUser = function(req, res){
 /**
  * Creates a SkatUser(Skat.SkatUser) from JSON body.
  * Endpoint: /api/skat-user || /api/skat/skat-user
+ * 
  * @param {Request} req Contains data for server.
  * @param {Response} res Response to client.
  */
@@ -79,6 +82,7 @@ exports.createSkatUser = function(req, res){
 /**
  * Deletes a SkatUser(Skat.SkatUser) based on id from parameters.
  * Endpoint: /api/skat-user/:id || /api/skat/skat-user/:id
+ * 
  * @param {Request} req Contains data for server.
  * @param {Response} res Response to client.
  */

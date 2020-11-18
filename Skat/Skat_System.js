@@ -1,5 +1,5 @@
 /*
- * Responsible for running the skat system
+ * Responsible for running the skat system.
  * 
  * Author: Arvid Larsen
  */
@@ -13,9 +13,7 @@ app.use(express.json());
 
 app.use('/api', catalogue);
 
-app.get("/", (req, res) => {
-    res.send("Heyo").status(200);
-})
+
 
 app.listen(port, (err) => {
     if(err){

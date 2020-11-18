@@ -1,4 +1,3 @@
-
 /*
  * Contains CRUD operations for Bank.Loan
  *
@@ -8,6 +7,11 @@ const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Bank/Bank.db');
 
+/**
+ * Gets a Loan record based on Id.
+ * 
+ * @param {Integer} loanId Id of loan to get.
+ */
 exports.getLoan = function(loanId){
     let queryGetLoan = "SELECT * FROM Loan WHERE Id = ?"
     
@@ -22,6 +26,11 @@ exports.getLoan = function(loanId){
     });
 }
 
+/**
+ * Gets all loans related to a Bank User Id.
+ * 
+ * @param {Integer} bankUserId Bank User Id to all loans of.
+ */
 exports.getUserLoans = function(bankUserId){
     let queryGetLoans = "SELECT * FROM Loan WHERE BankUserId = ?"
 
@@ -41,6 +50,12 @@ exports.getUserLoans = function(bankUserId){
     });
 }
 
+/**
+ * Responsible for creating a new loan.
+ * 
+ * @param {Integer} bankUserId BankUser.Id related to loan.
+ * @param {Float} amount How much was loaned.
+ */
 exports.createLoan = function(bankUserId, amount){
     let queryCreateLoan = "INSERT INTO Loan (BankUserId, CreatedAt, Amount) VALUES(?, ?, ?);";
     let creationDate = new Date().toISOString();
@@ -51,6 +66,11 @@ exports.createLoan = function(bankUserId, amount){
     });
 }
 
+/**
+ * Responsible for resolving loans.
+ * 
+ * @param {Integer} loanId Id of loan to resolve.
+ */
 exports.resolveLoan = function(loanId){
     let queryResolveLoan = "UPDATE Loan SET ModifiedAt = ?, Amount = ? WHERE Id = ?;"
     let modifiedAt = new Date().toISOString();

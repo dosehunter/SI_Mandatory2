@@ -7,7 +7,12 @@ const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Bank/Bank.db');
 
-
+/**
+ * Creates a new Deposit record in Deposit.
+ * 
+ * @param {Integer} userId User Id to tie to Deposit record.
+ * @param {Float} amount Amount deposited in transaction. 
+ */
 exports.addDeposit = function (userId, amount){
     let queryAddDeposit = "INSERT INTO Deposit(BankUserId, CreatedAt, Amount) VALUES(?, ?, ?)"
     let creationDate = new Date().toISOString();
@@ -20,6 +25,11 @@ exports.addDeposit = function (userId, amount){
     });
 }
 
+/**
+ * Responsible for retrieving all deposits related to a Bank User Id.
+ * 
+ * @param {Integer} bankUserId Bank User Id to get all deposits of.
+ */
 exports.getUserDeposits = function (bankUserId){
     let queryGetLoans = "SELECT * FROM Deposit WHERE BankUserId = ?"
 

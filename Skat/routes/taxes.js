@@ -12,7 +12,8 @@ const axios = require('axios');
  * Updating Skat.db -> SkatUserYear Amount
  * Send request to Bank to deduct money from userIds account
  * Endpoint: /api/pay-taxes || /api/skat/pay-taxes 
- * @param {Request} req Contains data for server.
+ * 
+ * @param {Request} req Incoming request, JSON: userId, amount.
  * @param {Response} res Response to client.
  */
 exports.payTaxes = function(req, res){

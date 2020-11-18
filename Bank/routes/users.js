@@ -1,12 +1,18 @@
 /*
- * Responsible for all routes related to users
+ * Responsible for all routes related to bank users (Bank.BankUser).
  * 
  * Author: Arvid Larsen
  */
 
 const User = require('../model/BankUser');
 
-//app.post("/user/:userId", (req, res) => {
+/**
+ * Endpoint for creating a new BankUser.
+ * Endpoint: /api/user/:userId | /api/bank/user/:userId
+ * 
+ * @param {request} req Incoming request, parameter with userId.
+ * @param {Response} res Outgoing response.
+ */
 exports.createUser = function(req, res){
     let userId = Number(req.params.userId);
 
@@ -14,7 +20,13 @@ exports.createUser = function(req, res){
     res.sendStatus(200);
 };
 
-//app.get("/user/:user", (req, res) => {
+/**
+ * Endpoint for getting a BankUser based on UserId.
+ * Endpoint: /api/user/:userId | /api/bank/user/:userId
+ * 
+ * @param {request} req Incoming request, parameter with userId.
+ * @param {Response} res Outgoing response.
+ */
 exports.getUser = function(req, res){
     let user = Number(req.params.userId);
 
@@ -25,7 +37,13 @@ exports.getUser = function(req, res){
     });
 };
 
-//app.delete("/user/:user", (req, res) => {
+/**
+ * Endpoint for deleting a BankUser based on UserId.
+ * Endpoint: /api/user/:userId | /api/bank/user/:userId
+ * 
+ * @param {request} req Incoming request, parameter with userId.
+ * @param {Response} res Outgoing response.
+ */
 exports.deleteUser = function(req, res){
     let user = Number(req.params.userId);
 
@@ -33,7 +51,13 @@ exports.deleteUser = function(req, res){
     res.sendStatus(200);
 };
 
-//app.get("/test-update", (req, res) => {
+/**
+ * Endpoint for updating a BankUser.
+ * Endpoint: /api/user/:userId | /api/bank/user/:userId
+ * 
+ * @param {request} req Incoming request, parameter with userId, JSON with newUserId.
+ * @param {Response} res Outgoing response.
+ */
 exports.updateUser = function(req, res){
     let userId = Number(req.params.userId);
     let newUserId = Number(req.body.newUserId);

@@ -1,5 +1,5 @@
 /*
- * Responsible for all routes related to accounts
+ * Responsible for all routes related to Accounts (Bank.Account).
  * 
  * Author: Arvid Larsen
  */
@@ -10,8 +10,13 @@ const sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('../Bank/Bank.db');
 
-
-//app.post("/account", (req, res) => {
+/**
+ * Endpoint for creating a new account.
+ * Endpoint: /api/account | /api/bank/account
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.createAccount = function(req, res) {
     let userId = Number(req.body.userId);
     let isStudent = Number(req.body.isStudent);
@@ -22,7 +27,13 @@ exports.createAccount = function(req, res) {
     res.sendStatus(200);
 };
 
-//app.get("/account/:accountId", (req, res) => {
+/**
+ * Endpoint for getting an account.
+ * Endpoint: /api/account/acountId | /api/bank/account:accountId
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.getAccount = function(req, res){
     let account = Number(req.params.accountId);
 
@@ -34,6 +45,13 @@ exports.getAccount = function(req, res){
 };
 
 //app.put("/account/:accountId", (req, res) => {
+/**
+ * Endpoint for updating an account.
+ * Endpoint: /api/account/:accountId | /api/bank/account/:accountId
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.updateAccount = function(req, res) {
     let accNo = Number(req.params.accountId);
     let newAccNo = Number(req.body.newAccountNo);
@@ -46,14 +64,26 @@ exports.updateAccount = function(req, res) {
     res.sendStatus(200);
 };
 
-//app.delete("/account/:accountId", (req, res) => {})
+/**
+ * Endpoint for deleting an account.
+ * Endpoint: /api/account/:accountId | /api/bank/account/:accountId
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.deleteAccount = function(req, res){
     let accountNo = Number(req.params.accountId);
     Account.deleteAccount(accountNo);
     res.sendStatus(200);
 };
 
-//app.post("/withdrawl-money", (req, res) => {
+/**
+ * Endpoint for withdrawing money.
+ * Endpoint: /api/withdrawl-money | /api/bank/withdrawl-money
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.withdrawMoney = function(req, res){
     let bankUserId = req.body.bankUserId.toString();
     let amount = req.body.amount.toString();
@@ -72,6 +102,13 @@ exports.withdrawMoney = function(req, res){
     });
 };
 
+/**
+ * Endpoint for paying taxes of User Id.
+ * Endpoint: /api/pay-userid-taxes | /api/bank/pay-userid-taxes
+ * 
+ * @param {request} req Incoming request.
+ * @param {Response} res Outgoing response.
+ */
 exports.payTaxes = function(req, res) {
     let userId = req.body.UserId;
     let amount = req.body.Amount;

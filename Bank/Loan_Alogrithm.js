@@ -11,7 +11,10 @@ var app = express();
 
 app.use(express.json());
 
-
+/**
+ * Endpoint for determining if a loan should be allowed or not.
+ * Receives JSON body with loanAmount(requested loan amount) and amountTotal(total amount on account).
+ */
 app.post("/api/bank/loan-calculate", (req, res) => {
     
     let loanAmount = req.body.loanAmount.toString();
