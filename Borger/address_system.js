@@ -1,3 +1,9 @@
+//Author: Jack Zhong
+
+//Description:  
+//Endpoints for CRUD functionalities in Address  
+
+
 const port = 6004;
 const express = require('express');
 const Address = require('./BorgerAddress');
@@ -5,6 +11,8 @@ const Address = require('./BorgerAddress');
 var app = express();
 
 app.use(express.json());
+
+//Getting address by userid 
 
 app.get("/api/borger_address/:UserId", (req, res) => {
     let userId = req.params.UserId.toString();
@@ -16,6 +24,8 @@ app.get("/api/borger_address/:UserId", (req, res) => {
     });
 });
 
+//Creating address by passing a userid and an andress
+
 app.post("/api/borger_address/add-address", (req, res) =>{
     let userId = req.body.UserId.toString();
     let address = req.body.Address.toString();
@@ -23,6 +33,8 @@ app.post("/api/borger_address/add-address", (req, res) =>{
     Address.createAddress(userId, address);
     return res.status(200).send({"Address has been added to the user": userId});     
     });
+
+//Updating address by address id and passing userid along with new address
 
 app.post("/api/borger_address/update-address/:Id", (req, res) =>{
     let Id = req.params.Id.toString();
@@ -32,6 +44,8 @@ app.post("/api/borger_address/update-address/:Id", (req, res) =>{
     Address.updateAddress(Id, address, userid);
     return res.status(200).send({"Address has been updated": userId});
     });
+
+//Deleted address by address id
 
 app.post("/api/borger_address/delete-address", (req, res) =>{
     let addressId = req.body.Id.toString();

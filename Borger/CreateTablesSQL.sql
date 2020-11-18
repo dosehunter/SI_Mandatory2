@@ -1,3 +1,5 @@
+/* Database table creation*/
+
 CREATE TABLE IF NOT EXISTS BorgerUser(
     [Id] INTEGER PRIMARY KEY AUTOINCREMENT,
     [UserId] INT(10),
