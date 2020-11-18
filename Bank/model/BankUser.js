@@ -5,16 +5,27 @@ var db = new sqlite3.Database('../Bank/Bank.db');
 exports.createUser = function (userId){
     let queryCreateUser = "INSERT INTO BankUser (UserId, CreatedAt) VALUES(?, ?)"
     let creationDate = new Date().toISOString();
-
-    db.run(queryCreateUser, [userId, creationDate], (err) => {
-        if (err){
-            return console.log(err.message);
+    
+    let queryFindUser = "SELECT * FROM BankUser WHERE UserId = ?";
+    db.get(queryFindUser, [userId], (err, row) => {
+        if(err){
+            return console.log("Poor return of an error!");
         }
-        console.log("Row added!")
-    })
+
+        if (!row){
+            db.run(queryCreateUser, [userId, creationDate], (err) => {
+                if (err){
+                    return console.log(err.message);
+                }
+                console.log("Row added!")
+            })
+        } else {
+            return console.log("USER ALREADY EXISTS");
+        }
+    });
 }
 
-exports.getUser = function (userId){
+exports.getUser = function intGetUser(userId){
     return new Promise((resolve, reject) => {
         let queryFindUser = "SELECT * FROM BankUser WHERE UserId = ?";
         db.get(queryFindUser, [userId], (err, row) => {
