@@ -6,14 +6,45 @@ let addressList = [{}];
 
 exports.createAddress = function (userId, address){
     let queryCreateAddress = "INSERT INTO Address (BorgerUserId, Address, CreatedAt, IsValid) VALUES(?, ?, ?, ?)"
+    let queryCheckUser = "SELECT * FROM BorgerUser WHERE UserId = ?"
+    let queryCheckAddress = "SELECT * FROM Address WHERE BorgerUserId = ? ORDER BY Id DESC LIMIT 1"
+    let querySetActiveFalse = "UPDATE Address SET IsValid = 0 WHERE Id = ?"
     let creationDate = new Date().toISOString();
     let isValid = true;
 
-    db.run(queryCreateAddress, [userId, address, creationDate, isValid], (err) => {
+    db.get(queryCheckUser, [userId], (err) => {
         if (err){
             return console.log(err.message);
         }
-        console.log("Row added!")
+        console.log("User found!")
+
+        db.get(queryCheckAddress, [userId], (err, row) => {
+            if (err){
+                return console.log(err.message);
+            }
+            console.log("Old address found!")
+
+            let id;
+
+            if (typeof(row) != "undefined")
+            {
+                id = row.Id;
+
+                db.run(querySetActiveFalse, [id], (err) => {
+                    if (err){
+                        return console.log(err.message);
+                    }
+                    console.log("Address is set to inactive!")
+                });
+            }
+        });
+
+        db.run(queryCreateAddress, [userId, address, creationDate, isValid], (err) => {
+            if (err){
+                return console.log(err.message);
+            }
+            console.log("Row added!")
+        });
     });
 }
 
@@ -30,22 +61,46 @@ exports.getAddress = function (userId){
     });
 }
 
-exports.updateAddress = function (userId, address){
+exports.updateAddress = function (Id, address, userId){
     let modifiedDate = new Date().toISOString();
-    let queryUpdateUser = "UPDATE Address SET Address = ?, CreatedAt = ?, IsValid = ? WHERE BorgerUserId = ?";
+    let queryUpdateUser = "UPDATE Address SET Address = ?, CreatedAt = ?, IsValid = ? WHERE Id = ?";
     let isValid = true;
 
-    db.run(queryUpdateUser, [address, modifiedDate, isValid, userId], (err) => {
+    db.run(queryUpdateUser, [address, modifiedDate, isValid, Id], (err) => {
         if (err){
             return console.log(err.message);
         }
         console.log("Address updated");
+        setValid(Id, userId);
     });
 }
 
-exports.deleteAddress = function(userId){
-    let quertyDeleteAddress = "DELETE FROM Address WHERE BorgerUserId = ?";
-    db.run(quertyDeleteAddress, [userId], (err) => {
+function setValid(Id, userid){
+    let queryGetAddresses = "SELECT * FROM Address WHERE BorgerUserId = ?;";
+    let querySetValid = "UPDATE Address SET IsValid = 0 WHERE Id = ?;";
+ 
+    db.all(queryGetAddresses, [userid], (err, rows) => {
+        if (err){
+            return console.log(err.message);
+        }
+ 
+        console.log("Got all addresses")
+        rows.forEach(row => {
+            if(row.Id != Id){
+                db.run(querySetValid, [row.Id], (err) => {
+                    if (err){
+                        return console.log(err.message);
+                    }
+                    console.log("Address is inactive");
+                })
+            }
+        })
+    })
+}
+
+exports.deleteAddress = function(Id){
+    let quertyDeleteAddress = "DELETE FROM Address WHERE Id = ?";
+    db.run(quertyDeleteAddress, [Id], (err) => {
         if (err){
             return console.log(err.message);
         }
@@ -54,41 +109,6 @@ exports.deleteAddress = function(userId){
     });
 }
 
-exports.setAddressList = function(userid, addressid)
-{
-    addressList.push({"userid": userid, "addressid": addressid});
-    
-    for(i = 1; i < addressList.length; i++)
-    {
-        if(addressList[i].userid == userid && addressList[i].addressid == addressid)
-        {
-            var text = userid + addressid;
-            
-            fs.appendFile('address_list.txt', text + "\n", function (err) {
-                if (err) throw err;
-                //console.log('Saved!');
-            });
-        }
-    }
-}
-/*exports.getAddressListIndex = function(index)
-{
-    return addressList[index].userid + " " + addressList[index].addressid;
-}*/
-
-exports.getAddressList = function()
-{
-    fs.readFile('address_list.txt', 'utf-8', (err, data) => { 
-        if (err) throw err; 
-    
-        var lines = data.split('\n');
-        for(var line = 0; line < lines.length; line++){
-          addressList[line] = lines[line];
-        }
-    });
-
-    return addressList;
-}
 
 
 

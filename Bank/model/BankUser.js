@@ -1,11 +1,9 @@
 const sqlite3 = require('sqlite3');
 
-var fs = require('fs');
-var db = new sqlite3.Database('../Borger/user_address_database.sqlite');
-let userList = [{}];
+var db = new sqlite3.Database('../Bank/Bank.db');
 
 exports.createUser = function (userId){
-    let queryCreateUser = "INSERT INTO BorgerUser (UserId, CreatedAt) VALUES(?, ?)"
+    let queryCreateUser = "INSERT INTO BankUser (UserId, CreatedAt) VALUES(?, ?)"
     let creationDate = new Date().toISOString();
 
     db.run(queryCreateUser, [userId, creationDate], (err) => {
@@ -18,7 +16,7 @@ exports.createUser = function (userId){
 
 exports.getUser = function (userId){
     return new Promise((resolve, reject) => {
-        let queryFindUser = "SELECT * FROM BorgerUser WHERE UserId = ?";
+        let queryFindUser = "SELECT * FROM BankUser WHERE UserId = ?";
         db.get(queryFindUser, [userId], (err, row) => {
             if (row){
                 resolve(row);
@@ -31,35 +29,22 @@ exports.getUser = function (userId){
 
 exports.updateUser = function (userId, newUserId){
     let modifiedDate = new Date().toISOString();
-    let queryUpdateUser = "UPDATE BorgerUser SET UserId = ?, CreatedAt = ? WHERE UserId = ?";
+    let queryUpdateUser = "UPDATE BankUser SET UserId = ?, ModifiedAt = ? WHERE UserId = ?";
 
     db.run(queryUpdateUser, [newUserId, modifiedDate, userId], (err) => {
         if (err){
             return console.log(err.message);
         }
-        console.log("User updated");
     });
 }
 
 exports.deleteUser = function(userId){
-    let quertyDeleteUser = "DELETE FROM BorgerUser WHERE UserId = ?";
-    let queryDeleteAddress = "DELETE FROM Address WHERE BorgerUserId = ?";
-    
+    let quertyDeleteUser = "DELETE FROM BankUser WHERE UserId = ?";
     db.run(quertyDeleteUser, [userId], (err) => {
         if (err){
             return console.log(err.message);
         }
 
         console.log("User removed");
-
-        db.run(queryDeleteAddress, [userId], (err) => {
-            if (err){
-                return console.log(err.message);
-            }
-    
-            console.log("Addresses removed");
-    
-            
-        });
     });
 }

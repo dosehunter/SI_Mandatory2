@@ -1,7 +1,6 @@
 const port = 6004;
 const express = require('express');
 const Address = require('./BorgerAddress');
-const axios = require('axios');
 
 var app = express();
 
@@ -20,55 +19,26 @@ app.get("/api/borger_address/:UserId", (req, res) => {
 app.post("/api/borger_address/add-address", (req, res) =>{
     let userId = req.body.UserId.toString();
     let address = req.body.Address.toString();
-    
-    axios.post("http://localhost:6005/api/borger_address/new-address", {"userId": userId, "address": address}).then(response =>{ 
-
-        let checkUser = response.data.checkUser.toString();
         
-        Address.createAddress(checkUser, address);
-        return res.status(200).send({"Address has been added": userId});     
-    }).catch(err =>{
-        if(err){
-            console.log(err);
-            return res.sendStatus(500);
-        }
+    Address.createAddress(userId, address);
+    return res.status(200).send({"Address has been added to the user": userId});     
     });
-});
 
-app.post("/api/borger_address/update-address/:UserId", (req, res) =>{
-    let userId = req.params.UserId.toString();
+app.post("/api/borger_address/update-address/:Id", (req, res) =>{
+    let Id = req.params.Id.toString();
     let address = req.body.Address.toString();
+    let userid = req.body.UserId.toString();
 
-    axios.post("http://localhost:6005/api/borger_address/updated-address", {"address": address}).then(response =>{
-        
-        let checkUser = response.data.checkUser.toString();
-
-        Address.updateAddress(checkUser, address);
-        return res.status(200).send({"User has been updated": userId});
-    }).catch(err =>{
-        if(err){
-            console.log(err);
-            return res.sendStatus(500);
-        }
+    Address.updateAddress(Id, address, userid);
+    return res.status(200).send({"Address has been updated": userId});
     });
-});
 
 app.post("/api/borger_address/delete-address", (req, res) =>{
-    let addressId = req.body.AddressId.toString();
+    let addressId = req.body.Id.toString();
 
-    axios.post("http://localhost:6005/api/borger_address/deleted-address", {"addressId": addressId}).then(response =>{
-        
-        let checkAddress = response.data.checkAddress.toString();
-
-        Address.deleteAddress(checkAddress);
-        return res.status(200).send({"User has been deleted": userId});
-    }).catch(err =>{
-        if(err){
-            console.log(err);
-            return res.sendStatus(500);
-        }
+    Address.deleteAddress(addressId);
+    return res.status(200).send({"Address has been deleted": addressId});
     });
-});
 
 app.listen(port, (err) => {
     if(err){
