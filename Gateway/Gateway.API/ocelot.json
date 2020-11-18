@@ -1,5 +1,5 @@
 {    
-    "Routes": [    
+    "Routes": [      
       {    
         "DownstreamPathTemplate": "/api/{controller}/{everything}",    
         "DownstreamScheme": "http",
