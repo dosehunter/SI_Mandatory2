@@ -1,8 +1,16 @@
+//Author: Jack Zhong
+
+//Description:
+//Database connection and functionalities for "Address" - table 
+
+
 const sqlite3 = require('sqlite3');
 
-var fs = require('fs');
 var db = new sqlite3.Database('../Borger/user_address_database.sqlite');
-let addressList = [{}];
+
+//Function for creating address in database. The function checks for existing borger
+//, then it checks for addresses correspondant to the existing borger and setting
+//the previous old address to be inactive. After that, it creates the address for the borger  
 
 exports.createAddress = function (userId, address){
     let queryCreateAddress = "INSERT INTO Address (BorgerUserId, Address, CreatedAt, IsValid) VALUES(?, ?, ?, ?)"
@@ -48,6 +56,8 @@ exports.createAddress = function (userId, address){
     });
 }
 
+//Function for getting address in database
+
 exports.getAddress = function (userId){
     return new Promise((resolve, reject) => {
         let queryFindAddress = "SELECT * FROM Address WHERE BorgerUserId = ?";
@@ -60,6 +70,9 @@ exports.getAddress = function (userId){
         });
     });
 }
+
+//Function for updating address in database. It sets the new updated address
+//to be active and all the old addresses to be inactive with the "setValid" - function
 
 exports.updateAddress = function (Id, address, userId){
     let modifiedDate = new Date().toISOString();
@@ -97,6 +110,8 @@ function setValid(Id, userid){
         })
     })
 }
+
+//Function for deleting address in the database
 
 exports.deleteAddress = function(Id){
     let quertyDeleteAddress = "DELETE FROM Address WHERE Id = ?";

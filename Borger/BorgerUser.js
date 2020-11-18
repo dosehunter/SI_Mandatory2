@@ -1,8 +1,14 @@
+//Author: Jack Zhong
+
+//Description:
+//Database connection and functionalities for "BorgerUser" - table 
+
+
 const sqlite3 = require('sqlite3');
 
-var fs = require('fs');
 var db = new sqlite3.Database('../Borger/user_address_database.sqlite');
-let userList = [{}];
+
+//Function for creating borger in database
 
 exports.createUser = function (userId){
     let queryCreateUser = "INSERT INTO BorgerUser (UserId, CreatedAt) VALUES(?, ?)"
@@ -15,6 +21,8 @@ exports.createUser = function (userId){
         console.log("Row added!")
     })
 }
+
+//Function for getting borger in database
 
 exports.getUser = function (userId){
     return new Promise((resolve, reject) => {
@@ -29,6 +37,8 @@ exports.getUser = function (userId){
     });
 }
 
+//Function for updating borger in database
+
 exports.updateUser = function (userId, newUserId){
     let modifiedDate = new Date().toISOString();
     let queryUpdateUser = "UPDATE BorgerUser SET UserId = ?, CreatedAt = ? WHERE UserId = ?";
@@ -40,6 +50,8 @@ exports.updateUser = function (userId, newUserId){
         console.log("User updated");
     });
 }
+
+//Function for deleting borger and it's correspondant addresses in the database
 
 exports.deleteUser = function(userId){
     let quertyDeleteUser = "DELETE FROM BorgerUser WHERE UserId = ?";
