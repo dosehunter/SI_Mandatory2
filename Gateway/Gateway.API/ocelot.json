@@ -1,7 +1,7 @@
 {    
-    "Routes": [    
+    "Routes": [      
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/{controller}/{everything}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -13,7 +13,7 @@
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}/{identifier}/{everything}",    
+        "DownstreamPathTemplate": "/api/borger/{controller}/{identifier}/{everything}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -25,7 +25,7 @@
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
-        "DownstreamPathTemplate": "/api/{controller}",    
+        "DownstreamPathTemplate": "/api/borger/{controller}",    
         "DownstreamScheme": "http",
         "DownstreamHostandPorts": [    
          {    
@@ -34,6 +34,30 @@
           }     
         ],    
         "UpstreamPathTemplate": "/api/borger/{controller}",    
+        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/borger_address/{controller}/{everything}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "6004"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/api/borger_address/{controller}/{everything}",    
+        "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
+      },
+      {    
+        "DownstreamPathTemplate": "/api/borger_address/{controller}",    
+        "DownstreamScheme": "http",
+        "DownstreamHostandPorts": [    
+         {    
+           "Host": "localhost",    
+           "Port": "6004"    
+          }     
+        ],    
+        "UpstreamPathTemplate": "/api/borger_address/{controller}",    
         "UpstreamHttpMethod": [ "GET", "POST", "DELETE", "PUT"]
       },
       {    
