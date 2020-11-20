@@ -49,6 +49,7 @@ router.post('/pay-loan', loans.payLoan);
 router.post('/withdrawl-money', accounts.withdrawMoney); 
 
 // GET, DELETE, and PUT for Getting/deleting/updating an Account.
+// NOTE!!! THIS IS accountNo AND NOT Id FOR WHATEVER REASON
 router.route('/account/:accountId')
     .get(accounts.getAccount)
     .delete(accounts.deleteAccount)

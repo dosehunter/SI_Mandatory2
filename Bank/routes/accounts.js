@@ -29,7 +29,7 @@ exports.createAccount = function(req, res) {
 
 /**
  * Endpoint for getting an account.
- * Endpoint: /api/account/acountId | /api/bank/account:accountId
+ * Endpoint: /api/account/acountNo | /api/bank/account:accountNo
  * 
  * @param {request} req Incoming request.
  * @param {Response} res Outgoing response.
