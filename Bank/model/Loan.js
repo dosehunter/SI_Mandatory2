@@ -57,12 +57,18 @@ exports.getUserLoans = function(bankUserId){
  * @param {Float} amount How much was loaned.
  */
 exports.createLoan = function(bankUserId, amount){
-    let queryCreateLoan = "INSERT INTO Loan (BankUserId, CreatedAt, Amount) VALUES(?, ?, ?);";
-    let creationDate = new Date().toISOString();
+    return new Promise((resolve, reject) => {
+        let queryCreateLoan = "INSERT INTO Loan (BankUserId, CreatedAt, Amount) VALUES(?, ?, ?);";
+        let creationDate = new Date().toISOString();
+    
+        db.run(queryCreateLoan, [bankUserId, creationDate, amount], function(err) {
+            if (err || this.changes == 0){
+                console.log(err);
+                reject(false);
+            }
 
-    db.run(queryCreateLoan, [bankUserId, creationDate, amount], err => {
-        if (err)
-            return console.log(err.message);
+            resolve(this.lastID);
+        });
     });
 }
 
@@ -72,11 +78,16 @@ exports.createLoan = function(bankUserId, amount){
  * @param {Integer} loanId Id of loan to resolve.
  */
 exports.resolveLoan = function(loanId){
-    let queryResolveLoan = "UPDATE Loan SET ModifiedAt = ?, Amount = ? WHERE Id = ?;"
-    let modifiedAt = new Date().toISOString();
-
-    db.run(queryResolveLoan, [modifiedAt, 0, loanId], err => {
-        if (err) 
-            return console.log(err.message);
+    return new Promise ((resolve, reject) => {
+        let queryResolveLoan = "UPDATE Loan SET ModifiedAt = ?, Amount = ? WHERE Id = ?;"
+        let modifiedAt = new Date().toISOString();
+    
+        db.run(queryResolveLoan, [modifiedAt, 0, loanId], function(err) {
+            if (err || this.changes == 0) {
+                console.log(err.message);
+                reject(false);
+            }
+            resolve(true);
+        });
     });
 }

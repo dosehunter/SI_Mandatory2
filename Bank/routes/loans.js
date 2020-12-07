@@ -38,9 +38,17 @@ exports.createLoan = function(req, res){
     Account.getUserAccount(bankUserId).then(account => {
         let totalAccountAmount = account.Amount.toString();
         axios.post('http://localhost:5000/api/bank_loan/loan-calculate', {loanAmount, totalAccountAmount}).then(loanApproved => {
-            Loan.createLoan(bankUserId, loanAmount);
-            
-            res.sendStatus(200);
+            Loan.createLoan(bankUserId, loanAmount).then(lastId => {
+                let loan = {
+                    "Id": lastId,
+                    "BankUserId": bankUserId,
+                    "LoanAmount": loanAmount
+                };
+    
+                res.status(201).send(loan); 
+            }).catch(err => {
+                res.sendStatus(400);
+            });
         }).catch(err => {
             res.sendStatus(400);
         });
@@ -66,8 +74,15 @@ exports.payLoan = function(req, res){
             if (account.Amount < loan.Amount){
                 res.sendStatus(403);
             } else {
-                Loan.resolveLoan(loanId);
-                res.sendStatus(200);
+                Account.updateAmount(bankUserId, -loan.Amount).then(accountUpdated => {
+                    Loan.resolveLoan(loanId).then(stat => {
+                        res.sendStatus(200)
+                    }).catch(err => {
+                        res.sendStatus(400);
+                    });
+                }).catch(err => {
+                    res.sendStatus(500);
+                });
             }
         }).catch(err => {
             console.log("ERROR")

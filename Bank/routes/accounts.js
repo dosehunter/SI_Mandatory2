@@ -22,9 +22,12 @@ exports.createAccount = function(req, res) {
     let isStudent = Number(req.body.isStudent);
     let interestRate = Number(req.body.interestRate);
     let amount = Number(req.body.amount);
-
-    Account.createAccount(userId, isStudent, interestRate, amount);
-    res.sendStatus(200);
+    
+    Account.createAccount(userId, isStudent, interestRate, amount).then(account => {
+        res.status(201).send(account);
+    }).catch(err => {
+        res.sendStatus(500)
+    });
 };
 
 /**
@@ -44,7 +47,6 @@ exports.getAccount = function(req, res){
     })
 };
 
-//app.put("/account/:accountId", (req, res) => {
 /**
  * Endpoint for updating an account.
  * Endpoint: /api/account/:accountId | /api/bank/account/:accountId
@@ -60,8 +62,11 @@ exports.updateAccount = function(req, res) {
     let interestRate = Number(req.body.interestRate);
     let amount = Number (req.body.amount);
 
-    Account.updateAccount(accNo, newAccNo, bankUserId, isStudent, interestRate, amount);
-    res.sendStatus(200);
+    Account.updateAccount(accNo, newAccNo, bankUserId, isStudent, interestRate, amount).then(response => {
+        res.sendStatus(204);
+    }).catch(err => {
+        res.sendStatus(400);
+    });
 };
 
 /**
@@ -73,8 +78,11 @@ exports.updateAccount = function(req, res) {
  */
 exports.deleteAccount = function(req, res){
     let accountNo = Number(req.params.accountId);
-    Account.deleteAccount(accountNo);
-    res.sendStatus(200);
+    Account.deleteAccount(accountNo).then(response => {
+        res.sendStatus(204);
+    }).catch(err =>{
+        res.sendStatus(400);
+    });
 };
 
 /**
@@ -92,7 +100,7 @@ exports.withdrawMoney = function(req, res){
         
         if (account.Amount - amount > 0){
             Account.updateAmount(bankUserId, -amount);
-            res.sendStatus(200);
+            res.sendStatus(204);
         } else {
             res.sendStatus(500);
         }
@@ -125,8 +133,7 @@ exports.payTaxes = function(req, res) {
                 res.sendStatus(200);
             }
         }).catch(err => {
-            res.send('Bank.accounts.payTaxes endpoint cannot communicate with /api/bank/withdrawl-money!').status(500);
+            res.status(500).send('Bank.accounts.payTaxes endpoint cannot communicate with /api/bank/withdrawl-money!');
         });
-
     });
 }

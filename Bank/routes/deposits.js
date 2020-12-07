@@ -19,7 +19,7 @@ exports.listDeposits = function(req, res){
     let bankUserId = req.params.bankUserId.toString();
     
     Deposit.getUserDeposits(bankUserId).then(list => {
-        res.send(list).status(200);
+        res.status(200).send(list);
     }).catch(err => {
         res.sendStatus(404);
     });
@@ -37,7 +37,6 @@ exports.addDeposit = function(req, res) {
     let bankUserId = req.body.bankUserId.toString();
     
     if (!amount || amount < 0){
-        console.log("What the hell dude?")
         res.sendStatus(403);
     }
     

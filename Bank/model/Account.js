@@ -16,18 +16,25 @@ var db = new sqlite3.Database('../Bank/Bank.db');
  * @param {Float} amount Amount of money tied to account.
  */
 exports.createAccount = function(bankUserId, isStudent, interestRate, amount){
-    let queryCreateAccount = "INSERT INTO Account (BankUserId, AccountNo, IsStudent, CreatedAt, InterestRate, Amount) VALUES(?, ?, ?, ?, ?, ?)"
-    let creationDate = new Date().toISOString();
-    let accountNo = Math.floor(Math.random() * (9999999999 - 1000000000) + 1000000000);
+    return new Promise((resolve, reject) => {
+        let queryCreateAccount = "INSERT INTO Account (BankUserId, AccountNo, IsStudent, CreatedAt, InterestRate, Amount) VALUES(?, ?, ?, ?, ?, ?)"
+        let creationDate = new Date().toISOString();
+        let accountNo = Math.floor(Math.random() * (9999999999 - 1000000000) + 1000000000);
 
-    if (interestRate == 0)
-        interestRate = 0.2;
+        if (interestRate == 0)
+            interestRate = 0.2;
 
-    db.run(queryCreateAccount, [bankUserId, accountNo, isStudent, creationDate, interestRate, amount], (err) => {
-        if (err)
-            return console.log(err.message);
-        
-        console.log("Account added!");
+        db.run(queryCreateAccount, [bankUserId, accountNo, isStudent, creationDate, interestRate, amount], function(err){
+            if (err)
+                reject(err.message);
+            
+            if (this.changes == 1){
+                console.log("Account added!");
+                resolve({BankUserId: this.lastID, AccountNo:accountNo, IsStudent:isStudent, CreatedAt:creationDate, InterestRate:interestRate, Amount:amount});
+            }else{
+                reject("Error in creation process");
+            }
+        })
     })
 }
 
@@ -83,15 +90,19 @@ exports.getUserAccount = function (bankUserId){
  * @param {Float} amount Amount of money tied to account.
  */
 exports.updateAccount = function(accountNo, newAccountNo, bankUserId, isStudent, interestRate, amount){
-    let modifiedDate = new Date().toISOString();
-    let queryUpdateAccount = "UPDATE Account SET BankUserId = ?, AccountNo = ?, IsStudent = ?, ModifiedAt = ?, InterestRate = ?, Amount = ? WHERE AccountNo= ?";
+    return new Promise((resolve, reject) => {
+        let modifiedDate = new Date().toISOString();
+        let queryUpdateAccount = "UPDATE Account SET BankUserId = ?, AccountNo = ?, IsStudent = ?, ModifiedAt = ?, InterestRate = ?, Amount = ? WHERE AccountNo= ?";
 
-    db.run(queryUpdateAccount, [bankUserId, newAccountNo, isStudent, modifiedDate, interestRate, amount, accountNo], (err) => {
-        if (err){
-            return console.log(err.message);
-        }
-        console.log("Account updated");
-    });
+        db.run(queryUpdateAccount, [bankUserId, newAccountNo, isStudent, modifiedDate, interestRate, amount, accountNo], function(err) {
+            if (err || this.changes == 0){
+                reject(false);
+            } else {
+                console.log("Account updated");
+                resolve(true);
+            }
+        });
+    })
 }
 
 /**
@@ -102,14 +113,18 @@ exports.updateAccount = function(accountNo, newAccountNo, bankUserId, isStudent,
  * @param {Float} amount Amount of money to add to account.
  */
 exports.updateAmount = function(bankUserId, amount){
-    let modifiedDate = new Date().toISOString();
-    let queryUpdateAccount = "UPDATE Account SET ModifiedAt = ?, Amount = Amount + ? WHERE BankUserId = ?";
-
-    db.run(queryUpdateAccount, [modifiedDate, amount, bankUserId], (err) => {
-        if (err){
-            return console.log(err.message);
-        }
-        console.log("Account amount updated");
+    return new Promise ((resolve, reject) => {
+        let modifiedDate = new Date().toISOString();
+        let queryUpdateAccount = "UPDATE Account SET ModifiedAt = ?, Amount = Amount + ? WHERE BankUserId = ?";
+    
+        db.run(queryUpdateAccount, [modifiedDate, amount, bankUserId], function(err) {
+            if (err || this.changes == 0){
+                console.log(err);
+                reject(false);
+            }
+            console.log("Account amount updated");
+            resolve(true);
+        });
     });
 }
 
@@ -119,13 +134,17 @@ exports.updateAmount = function(bankUserId, amount){
  * @param {Integer} accountNo Account number of account to delete.
  */
 exports.deleteAccount = function DeleteAccount(accountNo){
-    let quertyDeleteAccount = "DELETE FROM Account WHERE AccountNo = ?";
-    db.run(quertyDeleteAccount, [accountNo], (err) => {
-        if (err){
-            return console.log(err.message);
-        }
-
-        console.log("Account removed");
+    return new Promise((resolve, reject) => {
+        let quertyDeleteAccount = "DELETE FROM Account WHERE AccountNo = ?";
+        db.run(quertyDeleteAccount, [accountNo], function(err) {
+            if (err || this.changes == 0){
+                console.log(err);
+                reject(false);
+            } else {
+                console.log("Account removed");
+                resolve(true);
+            }
+        });
     });
 }
 
