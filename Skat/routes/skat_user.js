@@ -50,7 +50,7 @@ exports.updateSkatUser = function(req, res){
             res.sendStatus(500);
             return
         }
-        res.sendStatus(200)
+        res.sendStatus(204)
     });
 }
 
@@ -75,7 +75,7 @@ exports.createSkatUser = function(req, res){
             res.sendStatus(500);
             return
         }
-        res.sendStatus(200);
+        res.sendStatus(201);
     })
 }
 
@@ -98,7 +98,7 @@ exports.deleteSkatUserYear = function(req, res){
             res.sendStatus(500);
             return
         }
-        res.sendStatus(200);
+        res.sendStatus(201);
     });
 }
 

@@ -17,7 +17,7 @@ exports.createUser = function(req, res){
     let userId = Number(req.params.userId);
 
     User.createUser(userId);
-    res.sendStatus(200);
+    res.sendStatus(201);
 };
 
 /**
@@ -48,7 +48,7 @@ exports.deleteUser = function(req, res){
     let user = Number(req.params.userId);
 
     User.deleteUser(user);
-    res.sendStatus(200);
+    res.sendStatus(204);
 };
 
 /**
@@ -63,5 +63,5 @@ exports.updateUser = function(req, res){
     let newUserId = Number(req.body.newUserId);
     
     User.updateUser(userId, newUserId); 
-    res.sendStatus(200);
+    res.sendStatus(204);
 };

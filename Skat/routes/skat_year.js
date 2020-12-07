@@ -50,7 +50,7 @@ exports.createSkatYear = function(req, res){
             res.sendStatus(500);
             return
         }
-        res.sendStatus(200);
+        res.sendStatus(201);
     })
 }
 
@@ -75,7 +75,7 @@ exports.updateSkatYear = function(req, res){
             res.sendStatus(500);
             return;
         }
-        res.sendStatus(200);
+        res.sendStatus(204);
     });
 }
 
@@ -96,6 +96,6 @@ exports.deleteSkatYear = function(req, res){
             res.sendStatus(500);
             return;
         }
-        res.sendStatus(200);
+        res.sendStatus(204);
     });
 }

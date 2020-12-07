@@ -36,7 +36,7 @@ exports.createSkatUser = function(req, res){
     let amount = Number(req.body.amount);
 
     SkatUserYear.createSkatUserYear(skatUserId, skatYearId, userId, isPaid, amount);
-    res.sendStatus(200);
+    res.sendStatus(201);
 }
 
 /**
@@ -50,7 +50,7 @@ exports.deleteSkatUserYear = function(req, res){
     let id = req.params.id;
 
     SkatUserYear.deleteSkatUserYear(id);
-    res.sendStatus(200); // ZERO validation given, just following orders
+    res.sendStatus(204); // ZERO validation given, just following orders
 }
 
 /**
@@ -72,5 +72,5 @@ exports.updateSkatUserYear = function(req, res){
         "amount":req.body.amount
     };
     SkatUserYear.updateSkatUserYear(skatUserYear);
-    res.sendStatus(200);
+    res.sendStatus(204);
 }
