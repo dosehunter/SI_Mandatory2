@@ -129,7 +129,8 @@ exports.payTaxes = function(req, res) {
 
         let bankUserId = bUserId.BankUserId;
         axios.post("http://localhost:5000/api/bank/withdrawl-money", {bankUserId, amount}).then(response => {
-            if (response.status == 200){
+            console.log("Bank.PayTaxes -> Send withdrawl request...");
+            if (response.status >= 200 && response.status < 300){
                 res.sendStatus(200);
             }
         }).catch(err => {

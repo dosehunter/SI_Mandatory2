@@ -23,7 +23,7 @@ exports.payTaxes = function(req, res){
     SkatUserYear.getSkatUserYearUserId(userId).then(record => {
         let userSkatYear = record;
         
-        if (userSkatYear.Amount == 0){
+        if (userSkatYear.Amount <= 0){
             axios.post('http://localhost:7071/api/Skat_Tax_Calculator', {"money": totalAmount}).then(response =>{
                 let total = response.data.tax_money;
                 userSkatYear.IsPaid = 1;
@@ -33,8 +33,11 @@ exports.payTaxes = function(req, res){
                 // We should probably wait for this?
 
                 axios.post('http://localhost:5000/api/bank/pay-userid-taxes', {"UserId": userId, "Amount":total}).then(updResponse => {
-                    if (updResponse.status == 200){
+                    console.log("Skat.PayTaxes -> Have sent request to handle tax payement, returned status ", updResponse.status)
+                    if (updResponse.status >= 200 && updResponse.status < 300){
                         res.sendStatus(200);
+                    } else {
+                        res.status(500).send("An error occured...");
                     }
                 }).catch(err => {
                     res.sendStatus(403);
@@ -46,6 +49,7 @@ exports.payTaxes = function(req, res){
             res.send("Taxes have been paid").status(400);
         }
     }).catch(err => {
+        console.log("Error in getting the user")
         res.sendStatus(500);
     });
 };

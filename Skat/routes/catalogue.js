@@ -38,6 +38,7 @@ router.route('/skatUserYear')
 
 //#region TAX ROUTE
 // POST for paying taxes.
+// taxes.payTaxes -> getSkatUserYear -> Skat_Tax_calculator -> SkatUserYear.updateSkatUserYear -> Bank.pay_userId_taxes -> getAcc -> Bank.withdrawl_money
 router.post('/pay-taxes', taxes.payTaxes);
 
 //#endregion

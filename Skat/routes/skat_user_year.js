@@ -5,6 +5,9 @@
  */
 
 const SkatUserYear = require('../Model/SkatUserYear.js');
+const sqlite3 = require('sqlite3');
+
+var db = new sqlite3.Database('../Skat/Skat.db');
 
 /**
  * Retrieves a SkatUserYear based of Id.
@@ -16,9 +19,24 @@ const SkatUserYear = require('../Model/SkatUserYear.js');
 exports.getSkatUserYear = function(req, res){
     let id = req.params.id;
 
-    SkatUserYear.getSkatUserYear(id).then(row => {
-        res.send(row).status(200);
+    let queryGetSkatUserYear = "SELECT * FROM SkatUserYear WHERE Id = ?;"
+    
+    db.get(queryGetSkatUserYear, [id], (err, row) => {
+        if (err){
+            console.log(err.message);
+            res.sendStatus(500);
+            return;
+        }
+        if (!row){
+            res.sendStatus(400);
+            return;
+        }
+        res.send(row);
     });
+
+    //SkatUserYear.getSkatUserYear(id).then(row => {
+    //    res.send(row).status(200);
+    //});
 }
 
 /**
@@ -35,8 +53,19 @@ exports.createSkatUser = function(req, res){
     let isPaid = Number(req.body.isPaid);
     let amount = Number(req.body.amount);
 
-    SkatUserYear.createSkatUserYear(skatUserId, skatYearId, userId, isPaid, amount);
-    res.sendStatus(201);
+    let queryCreate = "INSERT INTO SkatUserYear (SkatUserId, SkatYearId, UserId, IsPaid, Amount) VALUES(?, ?, ?, ?, ?);"
+
+    db.run(queryCreate, [skatUserId, skatYearId, userId, isPaid, amount], (err) => {
+        if (err){
+            console.log("Hmm... An actual error message would probably be nice ...?");
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(201);
+    })
+
+    //SkatUserYear.createSkatUserYear(skatUserId, skatYearId, userId, isPaid, amount);
+    //res.sendStatus(201);
 }
 
 /**
@@ -49,8 +78,18 @@ exports.createSkatUser = function(req, res){
 exports.deleteSkatUserYear = function(req, res){
     let id = req.params.id;
 
-    SkatUserYear.deleteSkatUserYear(id);
-    res.sendStatus(204); // ZERO validation given, just following orders
+    let queryDeleteSkatUserYear = "DELETE FROM SkatUserYear WHERE Id = ?";
+    db.run(queryDeleteSkatUserYear, [id], err => {
+        if (err) {
+            console.log(err.toString());
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(222);
+    });
+
+    //SkatUserYear.deleteSkatUserYear(id);
+    //res.sendStatus(204); // ZERO validation given, just following orders
 }
 
 /**
@@ -60,17 +99,24 @@ exports.deleteSkatUserYear = function(req, res){
  * @param {Request} req Contains data for server, JSON object of SkatUserYear to update.
  * @param {Response} res Response to client.
  */
-exports.updateSkatUserYear = function(req, res){
-    // Or just expect to get a json object with all of that instead?
-    // Like let skatUserYear = req.body.skatUserYear;
-    let skatUserYear = {
-        "id": req.params.id,
-        "skatUserId": req.body.skatUserId,
-        "skatYearId":req.body.skatYearId,
-        "userId":req.body.userId,
-        "isPaid":req.body.isPaid,
-        "amount":req.body.amount
-    };
-    SkatUserYear.updateSkatUserYear(skatUserYear);
-    res.sendStatus(204);
+exports.updateSkatUserYear = function(req, res){   
+    let id = req.params.id;
+    let skatUserId = req.body.skatUserId;
+    let skatYearId = req.body.skatYearId;
+    let userId = req.body.userId;
+    let isPaid = req.body.isPaid;
+    let amount = req.body.amount;  
+
+    let queryUpdateUserYear = "UPDATE SkatUserYear SET SkatUserId = ?, SkatYearId = ?, UserId = ?, IsPaid = ?, Amount = ? WHERE Id = ?;";
+    
+    db.run(queryUpdateUserYear, [skatUserId, skatYearId, userId, isPaid, amount,id], (err) => {
+        if (err){
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
+        res.sendStatus(204);
+    })
+    //SkatUserYear.updateSkatUserYear(skatUserYear);
+    //res.sendStatus(204);
 }
