@@ -39,9 +39,9 @@ app.post("/api/borger_address/add-address", (req, res) =>{
 app.post("/api/borger_address/update-address/:Id", (req, res) =>{
     let Id = req.params.Id.toString();
     let address = req.body.Address.toString();
-    let userid = req.body.UserId.toString();
+    let userId = req.body.UserId.toString();
 
-    Address.updateAddress(Id, address, userid);
+    Address.updateAddress(Id, address, userId);
     return res.status(200).send({"Address has been updated": userId});
     });
 
